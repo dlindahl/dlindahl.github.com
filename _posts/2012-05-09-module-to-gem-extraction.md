@@ -1,10 +1,9 @@
 ---
+layout: default
 title: Extracting a Ruby Module into a Gem
 ---
 
 # DRAFT
-
-# Extracting a Ruby Module into a Gem
 
 **Disclaimer: I HAVE NO IDEA WHAT I AM DOING.**
 
