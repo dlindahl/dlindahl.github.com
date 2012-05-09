@@ -1,8 +1,12 @@
+---
+title: Extracting a Ruby Module into a Gem
+---
+
 # DRAFT
 
 # Extracting a Ruby Module into a Gem
 
-## Disclaimer: I HAVE NO IDEA WHAT I AM DOING.
+**Disclaimer: I HAVE NO IDEA WHAT I AM DOING.**
 
 How to use git to extract a Module living in `lib/` of your monorail application into its own gem, saving its commit
 history and including its tests.
