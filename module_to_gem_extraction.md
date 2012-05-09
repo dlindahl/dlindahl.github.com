@@ -37,25 +37,28 @@ If you are like me, your module probably lives in the following directory struct
 Most StackOverflow solutions only solve for the sub-directories. Nothing allowed
 the ability to include the root module file (i.e. `lib/conductor.rb`)
 
-1. Clone the monorail application repo
+### Clone the monorail application repo
+
+Start with a clean copy of your application. There is a good chance you're about to mess
+things up real badly:
 
     git clone --no-hardlinks git@github.com:jdoe/monorail.git extract_conductor
     cd extract_conductor
 
-This ensures that you don't mess anything up.
+### Extract all the folders we care about:
 
-2. Extract all the folders we care about:
+Pull your `lib/` and `spec/models` folders into their own separate branches:
 
     git filter-branch -f --tag-name-filter cat --subdirectory-filter lib --prune-empty lib-extraction
     git filter-branch -f --tag-name-filter cat --subdirectory-filter spec/models --prune-empty spec-models-extraction
 
-This pulls our `lib/` and `spec/models` folders into their own separate branches.
+Repeat as neccessary.
 
 If you checkout those branches, you'll see that the contents of `lib/` and `spec/models` are now in the root directory
 of the repo, including some modules that we don't care about. Not quite what we want, but it solves the problem of
 losing our `lib/conductor.rb` file.
 
-3. Remove unwanted modules
+### Remove unwanted modules
 
 We now have more than what we want, so let's ditch the modules we aren't extracting:
 
@@ -75,7 +78,7 @@ Did I mention that I have no idea what I'm doing here?
 
 You should now be left with two branches. One for `lib/` and one for `spec/models` that only contain your module.
 
-4. Rebuilt the directory structure
+### Rebuilt the directory structure
 
 As previously mentioned, the unfortunate effect of filter-branch is that it removes the `lib` and `spec` folders. To make
 the merge procedure we'll make later easier, let's rebuild that directory structure:
@@ -91,7 +94,7 @@ the merge procedure we'll make later easier, let's rebuild that directory struct
     git mv conductor* spec/.
     git commit -m "Gem extraction: Moved Conductor's spec files into their own `spec` folder."
 
-5. Create your Gem
+### Create your Gem
 
 Sweet. Both of our branches now have the files we want and in a directory structure we want. Let's make our gem.
 
@@ -107,7 +110,7 @@ you are about to do, which would make this whole excercise useless. So let's sta
     git add lib
     git stash save "Initial lib files."
 
-6. Pull in your extracted code.
+### Pull in your extracted code.
 
 Great. We now have a proper git repo with the standard set of files required for a gem. Let's get our code into this
 puppy.
@@ -130,22 +133,32 @@ Voila! Your extracted code is now in your gem's repo!
 
 Poke around, kick the tires, make sure everything looks as it should. If it doesn't, you messed something up, not me!
 
-7. Merge into master
+### Merge into master
 
 If everything looks OK, merge everything into master.
 
     git checkout master
     git merge import
 
-8. Bring back the stashed files.
+### Bring back the stashed files.
 
 A gem isn't a gem unless it has a version. Either create the files manually, or retrieve the previously stashed files:
 
     git stash pop
 
-You will almost certainly run into a merge conflict in `lib/conductor.rb`. Resolve appropriately.
+  You will almost certainly run into a merge conflict in `lib/conductor.rb`. Resolve appropriately.
 
 That's it! Push and release unto the world!
+
+#### References
+
+http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository
+http://stackoverflow.com/questions/4669795/git-surgery-splitting-out-a-single-repository-into-many-repositories
+http://help.github.com/remove-sensitive-data/
+
+#### Questions? Corrections?
+
+File a GitHub Issue or submit a Pull Request! :+1:
 
     
 
